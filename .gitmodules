@@ -1,0 +1,3 @@
+[submodule "supersplit/lib/forge-std"]
+	path = supersplit/lib/forge-std
+	url = https://github.com/foundry-rs/forge-std

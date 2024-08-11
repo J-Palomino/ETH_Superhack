@@ -1,13 +1,17 @@
 // SPDX-License-Identifier: MIT
-pragma solidity ^0.8.19;
+pragma solidity ^0.8.20;
 
 import "@openzeppelin/contracts/token/ERC20/IERC20.sol";
-import "@openzeppelin/contracts/token/ERC20/extensions/ERC20.sol";
+import "@openzeppelin/contracts/token/ERC20/ERC20.sol";
 import "@openzeppelin/contracts/token/ERC20/utils/SafeERC20.sol";
 import "@openzeppelin/contracts/utils/math/Math.sol";
+import "@openzeppelin/contracts/interfaces/IERC4626.sol";
+import "./IYieldStrategy.sol";
+import "@openzeppelin/contracts/access/Ownable.sol";
+
 // Interface for the yield strategy
 
-contract SuperSplitVault is ERC20, IERC4626 {
+contract SuperSplitVault is ERC20, IERC4626, Ownable {
     using SafeERC20 for IERC20;
     using Math for uint256;
 
@@ -92,7 +96,7 @@ contract SuperSplitVault is ERC20, IERC4626 {
 
     // Distribute excess liquidity after settlement
     function distributeExcessLiquidity() external onlyOwner {
-        uint256 totalAssets = totalAssets();
+        uint256 assetsTotal = totalAssets();
         for (uint256 i = 0; i < _members.length; i++) {
             address member = accountAtIndex(i);
             uint256 positiveBalance = balanceOf(member);
